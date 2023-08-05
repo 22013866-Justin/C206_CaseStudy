@@ -18,25 +18,49 @@ public class C206_CaseStudyTest {
 	}
 
 	@Test
-	public void enterFeedback() {
-//		ArrayList<Feedback> feedbackList = new ArrayList<Feedback>();
-
+	public void testValidUserManagement() {
+		UserManagement userManagementObject = new UserManagement();
+		boolean result = userManagementObject.AddUser("JohnDoe123", "Johnpassword", "johndoe@example.com", "John", "Doe", "12345678");
+		assertTrue(result);
 	}
+	
+	@Test
+	public void testInvalidEmail() {
+		UserManagement userManagementObject = new UserManagement();
+		boolean result = userManagementObject.AddUser("JohnDoe123", "Johnpassword", "invalidemail", "John", "Doe", "12345678");
+		assertFalse(result);
+	
+}
 
 	@Test
-	public void viewFeedback() {
-//		assertEquals(,C206_CaseStudy.ViewFeedback());
-//		assertEquals(null,C206_CaseStudy.ViewFeedback(-12,-1,-3,-4,-2})
+	public void testAddUser() {
+		//fail ("Not yet implemented");
+		// User list is not null and it is empty
+		assertNotNull("Test if there is valid User arrayList to add to", UserList);
+		assertEquals("Test  that the User arrayList is empty.", 0, UserList.size());
+		//Given an empty list, after adding 1 item, the size of the list is 1
+		UserManagement.AddUser(UserList, UL1);
+		assertEquals("Test that the UserList size is 1.", 1, UserList.size());
+		
+		//Add a new user
+		UserManagement.AddUser(UserList, UL2);
+		assertEquals("Test that the UserList size is now 2.", 2, UserList.size());
+		//The item just added is as same as the last item in the list
+		assertSame("Test that UserList is added to the end of the list.", UL2, UserList.get(1));
+		
+		//
+		Ul3.setIsAvailable(false);
+		UserManagement.AddUser(UserList, UL3);
+		assertEquals("Test that UserList size  is 2.", 3, UserList.get());
+		assertFalse("Test that the last item in the arraylist is not available", UserList.get(2).getIsAvailable());
+		
 	}
-	public void EnterFeedback() {
-		ArrayList<Feedback> FeedbackArrayList = new ArrayList<Feedback>();
-		System.out.println("start test case addCurrency");
-		System.out.println("test case addCurrency with assertEquals");
-		assertEquals(1,C206_CaseStudy.EnterFeedback(FeedbackArrayList,"123"));
-		assertNotEquals(0,C206_CaseStudy.EnterFeedback(FeedbackArrayList,"okok"));
-	}
-
 	
+	@Test
+	public void testDeleteUser() {
+		//fail ("Not yet implemented");
+	
+	}
 
 
 	
@@ -51,3 +75,6 @@ public class C206_CaseStudyTest {
 	}
 
 }
+
+
+	

@@ -5,181 +5,279 @@ import java.util.UUID;
 import java.util.List;
 import java.util.Arrays;
 
-
-
 public class C206_CaseStudy {
+
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		// display standard menu and ask for option
 
-		ArrayList<Feedback> feedbackList = new ArrayList<Feedback>();
 		int option = -99;
+		int adminOption = -99;
+		int userOption = -99;
+		int exisingUserOption = -99;
+		boolean authUser = false;
+		boolean authAdmin = false;
+		UserManagement.initAdmin();
 		publicMenu();
 		// indefinite while loop
-		while (option != 9) {
-			option = Helper.readInt("\nEnter option or 0 for main menu > ");
+		while (option != 3) {
+			publicMenu();
+			option = Helper.readInt("\nEnter option or 0 for public menu > ");
+			String[] userNameAndPassWord;
+			if (option == 1) {
+				// money system user
+				userMenu();
+				userOption = Helper.readInt("\nEnter user options or 0 for user menu > ");
+				while (userOption != 3) {
+				
+					if (userOption == 1) {
+						// Add a new user
+						AddUser();
+						System.out.println("User added");
+						userMenu();
+						userOption = Helper.readInt("\nEnter user options or 0 for user menu > ");
+					} else if (userOption == 2) {
+						// existing  user
+						userNameAndPassWord = UserManagement.userNameAndPassWordAsker();
+						System.out.println("checking user: " +userNameAndPassWord[0] + "pw: " + userNameAndPassWord[1]);
+						authUser = UserManagement.checkUserAuth(userNameAndPassWord[0], userNameAndPassWord[1]);
+						while (authUser == false) {
+							System.out.println("\n*** Wrong Username or password ***\n");
+							System.out.println("checking user: " +userNameAndPassWord[0] + "pw: " + userNameAndPassWord[1]);
+							userNameAndPassWord = UserManagement.userNameAndPassWordAsker();
+							System.out.println(userNameAndPassWord);
 
-			// check for options
-			if (option == 0) {
-				// display main menu
-				publicMenu();
-			} else if (option == 1) {
-				// Add a new user
-				AddUser(UserManagement);
+							authUser = UserManagement.checkUserAuth(userNameAndPassWord[0], userNameAndPassWord[1]);
+						}
+						existingUserMenu();
+						exisingUserOption = Helper.readInt("\nEnter user options or 0 for exisitng user menu > ");
+
+						while (exisingUserOption != 6) {
+							if (exisingUserOption == 0) {
+								// view existing user menu
+								existingUserMenu();
+								exisingUserOption = Helper.readInt("\nEnter user options or 0 for exisitng user menu > ");
+
+							}
+							if (exisingUserOption == 1) {
+								// Add a new user
+							} else if (exisingUserOption == 2) {
+								// View all users
+
+							} else if (exisingUserOption == 3) {
+								// Add currency
+
+							} else if (exisingUserOption == 4) {
+								// Delete currency
+
+							} else if (exisingUserOption == 5) {
+								// View Currency
+
+							} else if (exisingUserOption == 6){
+								break;
+
+							}else {
+								// invalid option chosen
+								System.out.println("\n*** Invalid option selected ***\n");
+								existingUserMenu();
+
+								exisingUserOption = Helper.readInt("\nEnter user options or 0 for exisitng user menu > ");
+
+							}
+						}
+						break;
+					} else if (userOption == 3) {
+						break;
+					}
+					else  {
+							// invalid option chosen
+							System.out.println("\n*** Invalid option selected ***\n");
+							userOption = Helper.readInt("\nEnter user options or 0 for user menu > ");
+
+					}
+				}
 			} else if (option == 2) {
-				// View all users
-				
-			} else if (option == 3) {
-				// Add currency
-			
-			} else if (option == 4) {
-				// Delete currency
-				
+				// money system admin
+				System.out.println("\n*** Enter Admin Username and password ***\n");
+				userNameAndPassWord = UserManagement.userNameAndPassWordAsker();
+				authAdmin = UserManagement.checkAdminAuth(userNameAndPassWord[0], userNameAndPassWord[1]);
+				while (authAdmin == false) {
+					System.out.println("\n*** Wrong Admin Username or password ***\n");
+					userNameAndPassWord = UserManagement.userNameAndPassWordAsker();
+					authAdmin = UserManagement.checkAdminAuth(userNameAndPassWord[0], userNameAndPassWord[1]);
+				}
+				adminMenu();
+				adminOption = Helper.readInt("\nEnter option or 0 for admin menu > ");
+				while (adminOption != 19) {
+					if (adminOption == 0) {
+						adminMenu();
+					} else if (adminOption == 1) {
+						// Add a new user1
+						AddUser();
+						System.out.println("User: added");
+						adminMenu();
+						adminOption = Helper.readInt("\nEnter user options or 0 for user menu > ");
+					} else if (adminOption == 2) {
+						// View all users
+						UserManagement.viewAllsers();
+						adminMenu();
+						adminOption = Helper.readInt("\nEnter user options or 0 for user menu > ");
 
-			} else if (option == 5) {
-				// View Currency
-		
-			} else if (option == 6) {
-				// Update Currency
-				
-			} else if (option == 7) {
-				// View feedback
-				
-			} else if (option == 8) {
-				// End visit
-				
-			} else if (option == 9) {
-				//Delete an existing transaction
-				
-			} else if (option == 10) {
-				//Add a new account
-				
-			} else if (option == 11) {
-				//View all accounts
-				
-			} else if (option == 12) {
-				//Delete an existing account
-				
-			} else if (option == 13) {
-				//Add a new rate
-				
-			} else if (option == 14) {
-				//View all rates
-				
-			} else if (option == 15) {
-				//Delete an existing rate
-				
-			} else if (option == 16) {
-				//Add new feedback
-				List<Object> feedback = AddFeedbackHelper();
-				EnterFeedback (feedbackList,feedback.get(0).toString(),feedback.get(1),feedback.get(2).toString());
-				
-			} else if (option == 17) {
-				//View all feedbacks
-				ViewFeedback(feedbackList);
-			} else if (option == 18) {
-				//Delete existing feedback
-				DeleteFeedback (feedbackList);
-			} else {
-				// invalid option chosen
-				System.out.println("\n*** Invalid option selected ***\n");
+
+					} else if (adminOption == 3) {
+						// delete user
+						DeleteUser();
+						adminMenu();
+						adminOption = Helper.readInt("\nEnter user options or 0 for user menu > ");
+
+					} else if (adminOption == 4) {
+						// Delete currency
+
+					} else if (adminOption == 5) {
+						// View Currency
+
+					} else if (adminOption == 6) {
+						// Update Currency
+
+					} else if (adminOption == 7) {
+						// View feedback
+
+					} else if (adminOption == 8) {
+						// End visit
+
+					} else if (adminOption == 9) {
+						// Delete an existing transaction
+
+					} else if (adminOption == 10) {
+						// Add a new account
+
+					} else if (adminOption == 11) {
+						// View all accounts
+
+					} else if (adminOption == 12) {
+						// Delete an existing account
+
+					} else if (adminOption == 13) {
+						// Add a new rate
+
+					} else if (adminOption == 14) {
+						// View all rates
+
+					} else if (adminOption == 15) {
+						// Delete an existing rate
+
+					} else if (adminOption == 16) {
+						// Add new feedback
+
+					} else if (adminOption == 17) {
+						// View all feedbacks
+
+					} else if (adminOption == 18) {
+						// Delete existing feedback
+					} else {
+						// invalid option chosen
+						System.out.println("\n*** Invalid option selected ***\n");
+					}
+
+				}
 			}
-
 		}
-
 	} // end of main
 
 	// -------------------------------------------------------------------------------------------------------
 	// static method to print the standard menu
 	// -------------------------------------------------------------------------------------------------------
-	public static void publicMenu() {
+
+	public static void userMenu() {
 		System.out.println();
 		Helper.line(45, "*");
-		System.out.println("*****     Money Management System     *****");
+		System.out.println("*****     Money Management User System     *****");
 		Helper.line(45, "*");
 
 		// -------------------
 		// Complete code here
 		// -------------------
 
-		String menu = "1. Add a new user\n" + "2. View all users\n" + "3. Delete an existing user\n" + "4. Delete Currency\n"
-				+ "5. View all Currencies\n" + "6. Update Currency\n" + "7. View feedback\n"
-				+ "8. Update Exchange rates\n" + "9. Check accounts\n" + "9. Logout\n" + "10. Add a new account\n" 
-				+ "11. View all accounts\n" + "12. Delete an existing account\n" + "13. Add a new rate\n" + "14. View all rates\n"
-				+ "15. Delete an existing rate\n" + "16. Add new feedback\n" + "17. View all feedbacks\n" + "18. Delete existing feedback\n";
+		String menu = "1. New user \n" +  "2. Existing user\n"+"3. Exit\n";
 
 		System.out.println(menu);
 	}
-	
-	
-	public static List<Object> AddFeedbackHelper(){
-		String comments = Helper.readString("Enter comments");
-		int ratingScale = Helper.readInt("From a scale of 1-5 with 5 being the most satisfactory money exchange experience, please rate");
-		while (ratingScale > 5 || ratingScale <= 0) {
-			ratingScale = Helper.readInt("Please enter a number from 1-5");
-		}
-		Date date = Helper.readDate("Enter date");
-		return  Arrays.asList(comments,ratingScale,date);
-	}
-	public static void EnterFeedback(ArrayList<Feedback> feedbackList, String comments, int ratingScale, Date date) {
-		int ratingScale = Helper.readInt(
-				"From a scale of 1-5 with 5 being the most satisfactory money exchange experience, please rate");
 
-		Feedback feedback = new Feedback();
-		 String uniqueID= UUID.randomUUID().toString();
-		feedback.setFeedback(uniqueID, comments, ratingScale, customerID, date);
-		feedbackList.add(feedback);
+	public static void existingUserMenu() {
+		System.out.println();
+		Helper.line(45, "*");
+		System.out.println("*****     Money Management Exisiting User System     *****");
+		Helper.line(45, "*");
+
+		// -------------------
+		// Complete code here
+		// -------------------
+
+		String menu = "1. Make transaction\n" + "2. Create account\n" + "3. Check accounts\n" + "4. Add new feedback\n"
+				+ "6. exit\n";
+
+		System.out.println(menu);
 	}
 
-	public static boolean ViewFeedback(ArrayList<Feedback> feedbackList) {
-		boolean getAllFeedback = Helper.readBoolean("View all feeback");
-		if(getAllFeedback) {
-			Feedback feedback = new Feedback();
-			feedback.viewAllFeedback(feedbackList);
-			return true;
-		}
-		
-		int inputcustomerID = Helper.readInt("Enter Customer ID");
-		Date inputdate = Helper.readDate("Enter Transaction Date");
+	public static void publicMenu() {
+		System.out.println();
+		Helper.line(45, "*");
+		System.out.println("*****     Money Management System Public menu      *****");
+		Helper.line(45, "*");
 
-		for (Feedback f : feedbackList) {
-			if ((Helper.sameDate(f.date, inputdate)) && (f.customerID == inputcustomerID)) {
-				System.out.println(f.comments);
-				return true;
-			}
+		// -------------------
+		// Complete code here
+		// -------------------
 
-		}
-		return true;
+		String menu = "choose user type\n" + "1.User\n" + "2.Admin\n" +"3.Exit \n";
 
+		System.out.println(menu);
 	}
 
-	public static int DeleteFeedback(ArrayList<Feedback> feedbackList, String uniqueID ) {
-		Feedback feedback = new Feedback();
-		feedback.deleteFeedback(feedbackList, uniqueID);
-		return feedbackList.size();
+	public static void adminMenu() {
+		System.out.println();
+		Helper.line(45, "*");
+		System.out.println("*****     Money Management System Admin menu     *****");
+		Helper.line(45, "*");
+
+		// -------------------
+		// Complete code here
+		// -------------------
+
+		String menu = "1. Add a new user\n" + "2. View all users\n" + "3. Delete an existing user\n"
+				+ "4. Delete Currency\n" + "5. View all Currencies\n" + "6. Update Currency\n" + "7. View feedback\n"
+				+ "8. Update Exchange rates\n" + "9. Check accounts\n" + "9. Logout\n" + "10. Add a new account\n"
+				+ "11. View all accounts\n" + "12. Delete an existing account\n" + "13. Add a new rate\n"
+				+ "14. View all rates\n" + "15. Delete an existing rate\n" + "16. Add new feedback\n"
+				+ "17. View all feedbacks\n" + "18. Delete existing feedback\n" + "19. exit \n";
+
+		System.out.println(menu);
 	}
 
-	
-	public static List<Object> AddUserHelper(){
+	public static void AddUser() {
 		String username = Helper.readString("Enter username");
 		String password = Helper.readString("Enter password");
 		String email = Helper.readString("Enter email");
 		String firstName = Helper.readString("Enter first name");
 		String lastName = Helper.readString("Enter last name");
 		String phoneNumber = Helper.readString("Enter phone number");
-		return  Arrays.asList(username,password,email,firstName,lastName,phoneNumber);
-		
-		public static void AddUser(ArrayList<UserManagement> arrayListName, String username, String password, String email, String firstName, String lastName, String phoneNumber) {
-			
-			UserManagement UserManagement = new UserManagement();
-			UserManagement.AddUser(UserToAdd);
-			
-		}
-		
-		
-		    
-		    
-		
 
-	
+		UserManagement userManagementObject = new UserManagement();
+		userManagementObject.setUsername(username);
+		userManagementObject.setPassword(password);
+		userManagementObject.setEmail(email);
+		userManagementObject.setFirstName(firstName);
+		userManagementObject.setLastName(lastName);
+		userManagementObject.setphoneNumber(phoneNumber);
+
+		UserManagement.AddUser(userManagementObject);
+	}
+
+	public static void DeleteUser() {
+		String username = Helper.readString("Enter username");
+		UserManagement.DeleteUser(username);
+		return;
+	}
+
+}
