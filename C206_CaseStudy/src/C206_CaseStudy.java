@@ -20,10 +20,10 @@ public class C206_CaseStudy {
 		boolean authAdmin = false;
 		UserManagement.initAdmin();
 		publicMenu();
+		option = Helper.readInt("\nEnter option or 0 for public menu > ");
+
 		// indefinite while loop
 		while (option != 3) {
-			publicMenu();
-			option = Helper.readInt("\nEnter option or 0 for public menu > ");
 			String[] userNameAndPassWord;
 			if (option == 1) {
 				// money system user
