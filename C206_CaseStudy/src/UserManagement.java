@@ -25,14 +25,20 @@ public class UserManagement {
 
     public static void initAdmin(){
         UserManagement adminObj =  new UserManagement("admin1","password","johndoe@gmail.com","justin","kwek","+8412123123123");
-        AdminList.add(adminObj);
+        getAdminList().add(adminObj);
     }
 
     public static  ArrayList<UserManagement> getUserList (){
             return UserList;
     }
 
-
+    public static int getUserListSize (){
+        return UserList.size();
+}
+    public static int getAdminListSize (){
+        return AdminList.size();
+}
+    
 	public static String[]  userNameAndPassWordAsker() {
         String  userNameAndPassWord [] = new String[2];
         String userName;
@@ -56,7 +62,7 @@ public class UserManagement {
     }
 
     public static boolean checkAdminAuth(String username, String password){
-       for (UserManagement admin : AdminList) {
+       for (UserManagement admin : getAdminList()) {
             if(admin.getUsername().equals(username) && admin.getPassword().equals(password)){
                 return  true;
 
@@ -170,6 +176,14 @@ public class UserManagement {
     public void setphoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+	public static ArrayList<UserManagement> getAdminList() {
+		return AdminList;
+	}
+
+	public static void setAdminList(ArrayList<UserManagement> adminList) {
+		AdminList = adminList;
+	}
     
 
 }

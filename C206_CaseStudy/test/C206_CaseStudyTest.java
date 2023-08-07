@@ -18,51 +18,159 @@ public class C206_CaseStudyTest {
 	}
 
 	@Test
-	public void testValidUserManagement() {
+	public void testValidAddUser() {
 		UserManagement userManagementObject = new UserManagement();
-		boolean result = userManagementObject.AddUser("JohnDoe123", "Johnpassword", "johndoe@example.com", "John", "Doe", "12345678");
-		assertTrue(result);
+		userManagementObject.setUsername("JohnDoe123");
+		userManagementObject.setPassword("Johnpassword");
+		userManagementObject.setEmail("johndoe@example.com");
+		userManagementObject.setFirstName("John");
+		userManagementObject.setLastName("Doe");
+		userManagementObject.setphoneNumber("12345678");
+		int UserListSizeBeforeAdd = UserManagement.getUserListSize();
+
+		UserManagement.AddUser(userManagementObject);
+		assertEquals(UserListSizeBeforeAdd+1, UserManagement.getUserListSize());
 	}
-	
+
 	@Test
-	public void testInvalidEmail() {
+	public void testInvalidAddUser() {
 		UserManagement userManagementObject = new UserManagement();
-		boolean result = userManagementObject.AddUser("JohnDoe123", "Johnpassword", "invalidemail", "John", "Doe", "12345678");
-		assertFalse(result);
-	
-}
+		userManagementObject.setUsername("JohnDoe123");
+		userManagementObject.setPassword("Johnpassword");
+		userManagementObject.setEmail("johndoe");
+		userManagementObject.setFirstName("John");
+		userManagementObject.setLastName("Doe");
+		userManagementObject.setphoneNumber("12345678");
+
+		UserManagement.AddUser(userManagementObject);
+		boolean result  ;
+		if (UserManagement.getUserListSize() ==1) {
+			result = true;
+		}
+		else {
+			result = false;
+		}
+				assertFalse(result);
+	}
 
 	@Test
-	public void testAddUser() {
-		//fail ("Not yet implemented");
-		// User list is not null and it is empty
-		assertNotNull("Test if there is valid User arrayList to add to", UserList);
-		assertEquals("Test  that the User arrayList is empty.", 0, UserList.size());
-		//Given an empty list, after adding 1 item, the size of the list is 1
-		UserManagement.AddUser(UserList, UL1);
-		assertEquals("Test that the UserList size is 1.", 1, UserList.size());
-		
-		//Add a new user
-		UserManagement.AddUser(UserList, UL2);
-		assertEquals("Test that the UserList size is now 2.", 2, UserList.size());
-		//The item just added is as same as the last item in the list
-		assertSame("Test that UserList is added to the end of the list.", UL2, UserList.get(1));
-		
-		//
-		Ul3.setIsAvailable(false);
-		UserManagement.AddUser(UserList, UL3);
-		assertEquals("Test that UserList size  is 2.", 3, UserList.get());
-		assertFalse("Test that the last item in the arraylist is not available", UserList.get(2).getIsAvailable());
-		
+	public void testDeleteUser () {
+		UserManagement userManagementObject = new UserManagement();
+		userManagementObject.setUsername("JohnDoe123");
+		userManagementObject.setPassword("Johnpassword");
+		userManagementObject.setEmail("johndoe@gmail.com");
+		userManagementObject.setFirstName("John");
+		userManagementObject.setLastName("Doe");
+		userManagementObject.setphoneNumber("12345678");
+
+		UserManagement.AddUser(userManagementObject);
+		int UserListSizeBeforeDelete =  UserManagement.getUserListSize();
+		UserManagement.DeleteUser(userManagementObject.getUsername());
+
+		assertEquals(UserListSizeBeforeDelete-1 , UserManagement.getUserListSize());
 	}
 	
 	@Test
-	public void testDeleteUser() {
-		//fail ("Not yet implemented");
+	public void testDeleteUserFail () {
+		UserManagement userManagementObject = new UserManagement();
+		userManagementObject.setUsername("JohnDoe123");
+		userManagementObject.setPassword("Johnpassword");
+		userManagementObject.setEmail("johndoe@gmail.com");
+		userManagementObject.setFirstName("John");
+		userManagementObject.setLastName("Doe");
+		userManagementObject.setphoneNumber("12345678");
+
+		UserManagement.AddUser(userManagementObject);
+		int userListSizeBeforeDelete = UserManagement.getUserListSize();
+		UserManagement.DeleteUser("Fakepassword");
+		
 	
+		assertEquals(userListSizeBeforeDelete, UserManagement.getUserListSize());
 	}
+	
+	
+	@Test
+	public void testValidAddAdmin() {
+		UserManagement userManagementObject = new UserManagement();
+		userManagementObject.setUsername("admin2");
+		userManagementObject.setPassword("password2");
+		userManagementObject.setEmail("johndoe@gmail.com");
+		userManagementObject.setFirstName("Steve");
+		userManagementObject.setLastName("Tan");
+		userManagementObject.setphoneNumber("91111111");
 
+		 ArrayList<UserManagement> adminList = UserManagement.getAdminList();
+		 int AdminListSizeBeforeAdd = UserManagement.getAdminListSize();
+		 adminList.add(userManagementObject);
+		 UserManagement.setAdminList(adminList);
+		 assertEquals(AdminListSizeBeforeAdd+1, UserManagement.getAdminListSize()); 
+		 }
+		 
+	
+	@Test
+	public void testUserAuthentication () {
+		UserManagement userManagementObject = new UserManagement();
+		userManagementObject.setUsername("JohnDoe123");
+		userManagementObject.setPassword("Johnpassword");
+		userManagementObject.setEmail("johndoe@gmail.com");
+		userManagementObject.setFirstName("John");
+		userManagementObject.setLastName("Doe");
+		userManagementObject.setphoneNumber("12345678");
 
+		UserManagement.AddUser(userManagementObject);
+		
+		assertTrue(UserManagement.checkUserAuth(userManagementObject.getUsername(),userManagementObject.getPassword()));
+	}
+	
+	@Test
+	public void testUserAuthenticationFail () {
+		UserManagement userManagementObject = new UserManagement();
+		userManagementObject.setUsername("JohnDoe123");
+		userManagementObject.setPassword("Johnpassword");
+		userManagementObject.setEmail("johndoe@gmail.com");
+		userManagementObject.setFirstName("John");
+		userManagementObject.setLastName("Doe");
+		userManagementObject.setphoneNumber("12345678");
+
+		UserManagement.AddUser(userManagementObject);
+		
+		assertFalse(UserManagement.checkUserAuth(userManagementObject.getUsername(),"Wrong password"));
+	}
+	
+	@Test
+	public void testAdminAuthentication () {
+		UserManagement userManagementObject = new UserManagement();
+		userManagementObject.setUsername("admin2");
+		userManagementObject.setPassword("password2");
+		userManagementObject.setEmail("johndoe@gmail.com");
+		userManagementObject.setFirstName("Steve");
+		userManagementObject.setLastName("Tan");
+		userManagementObject.setphoneNumber("91111111");
+
+		 ArrayList<UserManagement> adminList = UserManagement.getAdminList();
+		 adminList.add(userManagementObject);
+		 UserManagement.setAdminList(adminList);
+	
+		assertTrue(UserManagement.checkAdminAuth("admin2","password2"));
+	}
+	
+	@Test
+	public void testAdminAuthenticationFail () {
+
+		UserManagement userManagementObject = new UserManagement();
+		userManagementObject.setUsername("admin2");
+		userManagementObject.setPassword("password2");
+		userManagementObject.setEmail("johndoe@gmail.com");
+		userManagementObject.setFirstName("Steve");
+		userManagementObject.setLastName("Tan");
+		userManagementObject.setphoneNumber("91111111");
+
+		 ArrayList<UserManagement> adminList = UserManagement.getAdminList();
+		 adminList.add(userManagementObject);
+		 UserManagement.setAdminList(adminList);
+		assertFalse(UserManagement.checkAdminAuth("admin1","wrongpassword"));
+	}
+	
 	
 	@After
 	public void tearDown() throws Exception {
@@ -75,6 +183,3 @@ public class C206_CaseStudyTest {
 	}
 
 }
-
-
-	
