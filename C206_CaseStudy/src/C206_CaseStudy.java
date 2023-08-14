@@ -5,8 +5,174 @@ import java.util.UUID;
 import java.util.List;
 import java.util.Arrays;
 
+class Currency {
+	// Currency class to represent currency information
+	private String currencyCode;
+	private String currencyName;
+	private double exchangeRate;
+
+	public Currency(String currencyCode, String currencyName, double exchangeRate) {
+		this.currencyCode = currencyCode;
+		this.currencyName = currencyName;
+		this.exchangeRate = exchangeRate;
+
+	}
+
+	// Getter and setter methods for the currency attributes
+	public String getCurrencyCode() {
+		return currencyCode;
+	}
+
+	public void setCurrencyCode(String currencyCode) {
+		this.currencyCode = currencyCode;
+	}
+
+	public String getCurrencyName() {
+		return currencyName;
+	}
+
+	public void setCurrencyName(String currencyName) {
+		this.currencyName = currencyName;
+	}
+
+	public double getExchangeRate() {
+		return exchangeRate;
+	}
+
+	public void setExchangeRate(double exchangeRate) {
+		this.exchangeRate = exchangeRate;
+	}
+
+}
+
+class Currency_Management {
+
+	private List<Currency> currencies;
+
+	public Currency_Management() {
+
+		// Constructor initializes the list of currencies
+		setCurrencies(new ArrayList<>());
+
+	}
+
+	void initializeCommonCurrencies() {
+		// Method to add common currencies to the list during initialization
+		// Add currency codes, names, exchange rates, and a boolean indicating whether
+		// to show messages
+		// list of common currencies
+		addNewCurrency("USD", "US Dollar", 1.0, false);
+		addNewCurrency("EUR", "Euro", 0.85, false);
+		addNewCurrency("GBP", "British Pound", 0.75, false);
+		addNewCurrency("JPY", "Japanese Yen", 110.0, false);
+		addNewCurrency("AUD", "Australian Dollar", 1.35, false);
+		addNewCurrency("CAD", "Canadian Dollar", 1.25, false);
+		addNewCurrency("CHF", "Swiss Franc", 0.92, false);
+		addNewCurrency("CNY", "Chinese Yuan", 6.48, false);
+		addNewCurrency("INR", "Indian Rupee", 73.5, false);
+		addNewCurrency("SGD", "Singapore Dollar", 1.34, false);
+		addNewCurrency("NZD", "New Zealand Dollar", 1.44, false);
+		addNewCurrency("SEK", "Swedish Krona", 8.78, false);
+		addNewCurrency("KRW", "South Korean Won", 1179.0, false);
+		addNewCurrency("RUB", "Russian Ruble", 76.5, false);
+		addNewCurrency("BRL", "Brazilian Real", 5.25, false);
+		addNewCurrency("TRY", "Turkish Lira", 8.95, false);
+		addNewCurrency("ZAR", "South African Rand", 14.45, false);
+		addNewCurrency("AED", "United Arab Emirates Dirham", 3.67, false);
+		addNewCurrency("MXN", "Mexican Peso", 20.15, false);
+		addNewCurrency("THB", "Thai Baht", 33.6, false);
+		addNewCurrency("HKD", "Hong Kong Dollar", 7.77, false);
+	}
+
+	// Method to add a new currency to the list
+	public boolean addNewCurrency(String currencyCode, String currencyName, double exchangeRate, boolean showMessage) {
+		// Input validation
+		if (currencyCode.isEmpty() || currencyName.isEmpty() || exchangeRate <= 0) {
+			if (showMessage) {
+				System.out.println("Invalid input. Please provide valid details.");
+			}
+			return false;
+		}
+
+		// Convert input currency code to lowercase for case-insensitive comparison
+		String lowercaseCurrencyCode = currencyCode.toLowerCase();
+
+		// Check for duplicate currency code (case-insensitive)
+		for (Currency existingCurrency : getCurrencies()) {
+			if (existingCurrency.getCurrencyCode().equalsIgnoreCase(lowercaseCurrencyCode)) {
+				if (showMessage) {
+					System.out.println("Currency with the same code already exists.");
+				}
+				return false;
+			}
+		}
+
+		// If no duplicate is found, add the new currency
+		Currency newCurrency = new Currency(currencyCode, currencyName, exchangeRate);
+
+		getCurrencies().add(newCurrency);
+
+		return true;
+	}
+
+	// Getter method to retrieve the list of currencies
+	public List<Currency> getCurrencies() {
+		return currencies;
+	}
+
+	// Method to display information about all currencies
+	public void viewAllCurrencies() {
+		System.out.println("List of all currencies:");
+		for (Currency currency : getCurrencies()) {
+			System.out.println("Currency Code: " + currency.getCurrencyCode() + ", Currency Name: "
+					+ currency.getCurrencyName() + ", Exchange Rate: " + currency.getExchangeRate());
+		}
+	}
+
+	// Method to delete a currency from the list
+	public void deleteCurrency(String currencyCodeToDelete, boolean confirmDeletion) {
+		Currency currencyToDelete = null;
+		for (Currency currency : getCurrencies()) {
+			if (currency.getCurrencyCode().equalsIgnoreCase(currencyCodeToDelete)) {
+				currencyToDelete = currency;
+				break;
+			}
+		}
+
+		if (currencyToDelete != null) {
+			if (confirmDeletion) {
+				Scanner scanner = new Scanner(System.in);
+				System.out.print("Are you sure you want to delete the currency " + currencyToDelete.getCurrencyName()
+						+ " (Y/N)? ");
+				String confirmation = scanner.nextLine().trim().toLowerCase();
+				if (confirmation.equals("y")) {
+					getCurrencies().remove(currencyToDelete);
+					System.out.println("Currency deleted successfully!");
+				} else {
+					System.out.println("Currency deletion canceled.");
+				}
+			} else {
+				getCurrencies().remove(currencyToDelete);
+				System.out.println("Currency deleted successfully!");
+			}
+		} else {
+			System.out.println("Currency not found.");
+		}
+	}
+
+	private void deleteCurrency(String currencyCodeToDelete) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void setCurrencies(List<Currency> currencies) {
+		this.currencies = currencies;
+	}
+}
+
 public class C206_CaseStudy {
 
+	private static Currency_Management currencyManagement;
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -20,17 +186,20 @@ public class C206_CaseStudy {
 		boolean authAdmin = false;
 		UserManagement.initAdmin();
 		publicMenu();
-		option = Helper.readInt("\nEnter option or 0 for public menu > ");
-
 		// indefinite while loop
+		currencyManagement = new Currency_Management();
 		while (option != 3) {
+			currencyManagement = new Currency_Management();
+			currencyManagement.initializeCommonCurrencies();
+			publicMenu();
+			option = Helper.readInt("\nEnter option or 0 for public menu > ");
 			String[] userNameAndPassWord;
 			if (option == 1) {
 				// money system user
 				userMenu();
 				userOption = Helper.readInt("\nEnter user options or 0 for user menu > ");
 				while (userOption != 3) {
-				
+
 					if (userOption == 1) {
 						// Add a new user
 						AddUser();
@@ -38,13 +207,15 @@ public class C206_CaseStudy {
 						userMenu();
 						userOption = Helper.readInt("\nEnter user options or 0 for user menu > ");
 					} else if (userOption == 2) {
-						// existing  user
+						// existing user
 						userNameAndPassWord = UserManagement.userNameAndPassWordAsker();
-						System.out.println("checking user: " +userNameAndPassWord[0] + "pw: " + userNameAndPassWord[1]);
+						System.out
+								.println("checking user: " + userNameAndPassWord[0] + "pw: " + userNameAndPassWord[1]);
 						authUser = UserManagement.checkUserAuth(userNameAndPassWord[0], userNameAndPassWord[1]);
 						while (authUser == false) {
 							System.out.println("\n*** Wrong Username or password ***\n");
-							System.out.println("checking user: " +userNameAndPassWord[0] + "pw: " + userNameAndPassWord[1]);
+							System.out.println(
+									"checking user: " + userNameAndPassWord[0] + "pw: " + userNameAndPassWord[1]);
 							userNameAndPassWord = UserManagement.userNameAndPassWordAsker();
 							System.out.println(userNameAndPassWord);
 
@@ -57,7 +228,8 @@ public class C206_CaseStudy {
 							if (exisingUserOption == 0) {
 								// view existing user menu
 								existingUserMenu();
-								exisingUserOption = Helper.readInt("\nEnter user options or 0 for exisitng user menu > ");
+								exisingUserOption = Helper
+										.readInt("\nEnter user options or 0 for exisitng user menu > ");
 
 							}
 							if (exisingUserOption == 1) {
@@ -74,26 +246,26 @@ public class C206_CaseStudy {
 							} else if (exisingUserOption == 5) {
 								// View Currency
 
-							} else if (exisingUserOption == 6){
+							} else if (exisingUserOption == 6) {
 								break;
 
-							}else {
+							} else {
 								// invalid option chosen
 								System.out.println("\n*** Invalid option selected ***\n");
 								existingUserMenu();
 
-								exisingUserOption = Helper.readInt("\nEnter user options or 0 for exisitng user menu > ");
+								exisingUserOption = Helper
+										.readInt("\nEnter user options or 0 for exisitng user menu > ");
 
 							}
 						}
 						break;
 					} else if (userOption == 3) {
 						break;
-					}
-					else  {
-							// invalid option chosen
-							System.out.println("\n*** Invalid option selected ***\n");
-							userOption = Helper.readInt("\nEnter user options or 0 for user menu > ");
+					} else {
+						// invalid option chosen
+						System.out.println("\n*** Invalid option selected ***\n");
+						userOption = Helper.readInt("\nEnter user options or 0 for user menu > ");
 
 					}
 				}
@@ -124,7 +296,6 @@ public class C206_CaseStudy {
 						adminMenu();
 						adminOption = Helper.readInt("\nEnter user options or 0 for user menu > ");
 
-
 					} else if (adminOption == 3) {
 						// delete user
 						DeleteUser();
@@ -132,48 +303,92 @@ public class C206_CaseStudy {
 						adminOption = Helper.readInt("\nEnter user options or 0 for user menu > ");
 
 					} else if (adminOption == 4) {
-						// Delete currency
+						// Add currency
+						String currencyCode = Helper.readString("Enter the currency code: ");
+						String currencyName = Helper.readString("Enter the currency name: ");
+						double exchangeRate = Helper.readDouble("Enter the exchange rate: ");
+
+						boolean currencyAdded = currencyManagement.addNewCurrency(currencyCode, currencyName,
+								exchangeRate, true);
+						if (currencyAdded) {
+							System.out.println("Currency added successfully!");
+						} else {
+							System.out.println("Currency could not be added. Please provide valid details.");
+						}
+						adminMenu();
+						adminOption = Helper.readInt("\nEnter user options or 0 for user menu > ");
 
 					} else if (adminOption == 5) {
 						// View Currency
+						currencyManagement.viewAllCurrencies();
+						adminMenu();
+						adminOption = Helper.readInt("\nEnter user options or 0 for user menu > ");
 
 					} else if (adminOption == 6) {
 						// Update Currency
+						String currencyCodeToUpdate = Helper.readString("Enter the currency code to update: ");
+
+						// Find the currency to update in the list
+						Currency currencyToUpdate = null;
+						for (Currency currency : currencyManagement.getCurrencies()) {
+							if (currency.getCurrencyCode().equalsIgnoreCase(currencyCodeToUpdate)) {
+								currencyToUpdate = currency;
+								break;
+							}
+						}
+
+						if (currencyToUpdate != null) {
+							double newExchangeRate = Helper.readDouble("Enter the new exchange rate: ");
+							currencyToUpdate.setExchangeRate(newExchangeRate);
+							System.out.println("Currency updated successfully!");
+						} else {
+							System.out.println("Currency not found.");
+						}
+
+						adminMenu();
+						adminOption = Helper.readInt("\nEnter option or 0 for admin menu > ");
 
 					} else if (adminOption == 7) {
-						// View feedback
+						// Delete Currency
+						String currencyCodeToDelete = Helper.readString("Enter the currency code to delete: ");
+						currencyManagement.deleteCurrency(currencyCodeToDelete, true);
+						adminMenu();
+						adminOption = Helper.readInt("\nEnter user options or 0 for user menu > ");
 
 					} else if (adminOption == 8) {
-						// End visit
+						// View feedback
 
 					} else if (adminOption == 9) {
-						// Delete an existing transaction
+						// End visit
 
 					} else if (adminOption == 10) {
-						// Add a new account
+						// Delete an existing transaction
 
 					} else if (adminOption == 11) {
-						// View all accounts
+						// Add a new account
 
 					} else if (adminOption == 12) {
-						// Delete an existing account
+						// View all accounts
 
 					} else if (adminOption == 13) {
-						// Add a new rate
+						// Delete an existing account
 
 					} else if (adminOption == 14) {
-						// View all rates
+						// Add a new rate
 
 					} else if (adminOption == 15) {
-						// Delete an existing rate
+						// View all rates
 
 					} else if (adminOption == 16) {
-						// Add new feedback
+						// Delete an existing rate
 
 					} else if (adminOption == 17) {
-						// View all feedbacks
+						// Add new feedback
 
 					} else if (adminOption == 18) {
+						// View all feedbacks
+
+					} else if (adminOption == 19) {
 						// Delete existing feedback
 					} else {
 						// invalid option chosen
@@ -183,6 +398,7 @@ public class C206_CaseStudy {
 				}
 			}
 		}
+
 	} // end of main
 
 	// -------------------------------------------------------------------------------------------------------
@@ -199,7 +415,7 @@ public class C206_CaseStudy {
 		// Complete code here
 		// -------------------
 
-		String menu = "1. New user \n" +  "2. Existing user\n"+"3. Exit\n";
+		String menu = "1. New user \n" + "2. Existing user\n" + "3. Exit\n";
 
 		System.out.println(menu);
 	}
@@ -230,7 +446,7 @@ public class C206_CaseStudy {
 		// Complete code here
 		// -------------------
 
-		String menu = "choose user type\n" + "1.User\n" + "2.Admin\n" +"3.Exit \n";
+		String menu = "choose user type\n" + "1.User\n" + "2.Admin\n" + "3.Exit \n";
 
 		System.out.println(menu);
 	}
@@ -246,11 +462,13 @@ public class C206_CaseStudy {
 		// -------------------
 
 		String menu = "1. Add a new user\n" + "2. View all users\n" + "3. Delete an existing user\n"
-				+ "4. Delete Currency\n" + "5. View all Currencies\n" + "6. Update Currency\n" + "7. View feedback\n"
-				+ "8. Update Exchange rates\n" + "9. Check accounts\n" + "9. Logout\n" + "10. Add a new account\n"
-				+ "11. View all accounts\n" + "12. Delete an existing account\n" + "13. Add a new rate\n"
-				+ "14. View all rates\n" + "15. Delete an existing rate\n" + "16. Add new feedback\n"
-				+ "17. View all feedbacks\n" + "18. Delete existing feedback\n" + "19. exit \n";
+				+ "4. Add Currency\n" + "5. View all Currencies\n" + "6. Update Currency\n" + // New option for updating
+																								// currency
+				"7. Delete Currency\n" + "8. View feedback\n" + "9. Update Exchange rates\n" + "10. Check accounts\n"
+				+ "11. Logout\n" + "12. Add a new account\n" + "13. View all accounts\n"
+				+ "14. Delete an existing account\n" + "15. Add a new rate\n" + "16. View all rates\n"
+				+ "17. Delete an existing rate\n" + "18. Add new feedback\n" + "19. View all feedbacks\n"
+				+ "20. Delete existing feedback\n" + "21. exit \n";
 
 		System.out.println(menu);
 	}
