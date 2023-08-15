@@ -281,7 +281,7 @@ public class C206_CaseStudy {
 				}
 				adminMenu();
 				adminOption = Helper.readInt("\nEnter option or 0 for admin menu > ");
-				while (adminOption != 19) {
+				while (adminOption != 21) {
 					if (adminOption == 0) {
 						adminMenu();
 					} else if (adminOption == 1) {
@@ -359,10 +359,10 @@ public class C206_CaseStudy {
 						// View feedback
 
 					} else if (adminOption == 9) {
-						// End visit
+						// Update exchange rates
 
 					} else if (adminOption == 10) {
-						// Delete an existing transaction
+						// Check accounts
 
 					} else if (adminOption == 11) {
 						// Add a new account
@@ -390,11 +390,23 @@ public class C206_CaseStudy {
 
 					} else if (adminOption == 19) {
 						// Delete existing feedback
-					} else {
+
+					} else if (adminOption == 20) {
+
+					} else if (adminOption == 20) {
+						while (adminOption != 20) {
+							if (adminOption == 0) {
+						// view existing user menu
+						existingUserMenu();
+						adminOption = Helper.readInt("\nEnter user options or 0 for exisitng user menu > ");
+
+						} else {
 						// invalid option chosen
 						System.out.println("\n*** Invalid option selected ***\n");
-					}
+							}
 
+						}
+					}
 				}
 			}
 		}
@@ -465,10 +477,10 @@ public class C206_CaseStudy {
 				+ "4. Add Currency\n" + "5. View all Currencies\n" + "6. Update Currency\n" + // New option for updating
 																								// currency
 				"7. Delete Currency\n" + "8. View feedback\n" + "9. Update Exchange rates\n" + "10. Check accounts\n"
-				+ "11. Logout\n" + "12. Add a new account\n" + "13. View all accounts\n"
-				+ "14. Delete an existing account\n" + "15. Add a new rate\n" + "16. View all rates\n"
-				+ "17. Delete an existing rate\n" + "18. Add new feedback\n" + "19. View all feedbacks\n"
-				+ "20. Delete existing feedback\n" + "21. exit \n";
+				+ "11. Add a new account\n" + "12. View all accounts\n" + "13. Delete an existing account\n"
+				+ "14. Add a new rate\n" + "15. View all rates\n" + "16. Delete an existing rate\n"
+				+ "17. Add new feedback\n" + "18. View all feedbacks\n" + "19. Delete existing feedback\n"
+				+ "20. exit \n";
 
 		System.out.println(menu);
 	}
