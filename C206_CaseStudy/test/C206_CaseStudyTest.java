@@ -1,4 +1,4 @@
- import static org.junit.Assert.*;
+import static org.junit.Assert.*;
 import org.junit.*;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -199,9 +199,6 @@ public class C206_CaseStudyTest {
      assertEquals(1.0, addedCurrency.getExchangeRate(), 0.001);
  }
 
-
-
-
 //This tests adding a duplicate currency (error condition).
 //It adds the same currency twice and verifies that only one currency is added to the list.
 @Test
@@ -218,21 +215,19 @@ public void testInvalidExchangeRate() {
  currencyManagement.addNewCurrency("EUR", "Euro", -0.85, true);
  assertEquals(0, currencyManagement.getCurrencies().size());
 }
-
     
- // This tests adding a currency with the maximum possible exchange rate (boundary condition).
- // It verifies that the currency is added successfully and its properties are correct.
- @Test
- public void testAddCurrency_MaximumExchangeRate() {
-     boolean added = currencyManagement.addNewCurrency("BTC", "Bitcoin", Double.MAX_VALUE, false);
-     assertTrue(added);
+//This tests adding a currency with a very low exchange rate (boundary condition).
+//It verifies that the currency is added successfully and its properties are correct.
+@Test
+public void testAddCurrency_LowExchangeRate() {
+ boolean added = currencyManagement.addNewCurrency("ABC", "Low Exchange Currency", 0.001, false);
+ assertTrue(added);
 
-     Currency addedCurrency = currencyManagement.getCurrencies().get(0);
-     assertEquals("BTC", addedCurrency.getCurrencyCode());
-     assertEquals("Bitcoin", addedCurrency.getCurrencyName());
-     assertEquals(Double.MAX_VALUE, addedCurrency.getExchangeRate(), 0.001);
- }
-  
+ Currency addedCurrency = currencyManagement.getCurrencies().get(0);
+ assertEquals("ABC", addedCurrency.getCurrencyCode());
+ assertEquals("Low Exchange Currency", addedCurrency.getCurrencyName());
+ assertEquals(0.001, addedCurrency.getExchangeRate(), 0.001);
+}
 
 //This tests viewing all currencies (normal condition).
 //It initializes common currencies, and while not testing the output,
@@ -361,7 +356,7 @@ public void testDeleteCurrency_NonExistentCurrency() {
 
 //testAddDuplicateCurrency: Tests adding a duplicate currency and ensures that only one currency is added. (Error condition)
 
-//testInvalidExchangeRate: Tests adding a currency with an invalid exchange rate and confirms that no currency is added. (Error condition)
+//testAddCurrency_LowExchangeRate : Tests adds a currency with a very low exchange rate (boundary condition).
 
 //testViewAllCurrencies: Tests viewing all currencies and ensures that the method executes without errors. (Normal condition)
 
@@ -374,4 +369,4 @@ public void testDeleteCurrency_NonExistentCurrency() {
 //testDeleteCurrencyWithoutConfirmation: Tests deleting a currency without confirmation and asserts that the currency list becomes empty. (Normal condition)
 
 //testDeleteNonexistentCurrency: Tests attempting to delete a non-existent currency and confirms that the currency list remains unchanged. (Boundary condition)
-    
+        
